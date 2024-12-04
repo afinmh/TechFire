@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Monitor</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <header>
+        <h1>ESP32 Monitor Dashboard</h1>
+    </header>
+    <main>
+        <div class="status">
+            <strong>MQTT Status:</strong> <span id="mqtt_status"></span>
+        </div>
+        <div class="status">
+            <strong>Gas:</strong> <span id="gas"></span>
+        </div>
+        <div class="status">
+            <strong>Direction:</strong> <span id="direction"></span>
+        </div>
+        <div class="status">
+            <strong>Steer:</strong> <span id="steer"></span>
+        </div>
+        <div class="status">
+            <strong>Distance:</strong> <span id="distance"></span>
+        </div>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </main>
+    <footer>
+        &copy; 2024 ESP32 Dashboard.
+    </footer>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>
