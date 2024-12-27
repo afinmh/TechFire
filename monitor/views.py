@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
-from .models import Userakun
+from .models import Userakun, SensorData
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -28,9 +28,20 @@ def update_status(request):
         try:
             data = json.loads(request.body)
             status_data.update(data)
-            return JsonResponse({"success": True, "message": "Status updated"})
+
+            SensorData.objects.create(
+                pompa=data.get("pompa", "OFF"),
+                strobo=data.get("strobo", "OFF"),
+                speaker=data.get("speaker", "OFF"),
+                fire=data.get("fire", "Aman"),
+                batre=data.get("batre", 0),
+                distance=data.get("distance", 0.0),
+            )
+
+            return JsonResponse({"success": True, "message": "Status updated and saved to database"})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
+
     return JsonResponse({"success": False, "message": "Invalid request"})
 
 def dashboard(request):

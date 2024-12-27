@@ -75,6 +75,53 @@
             MQTTconnect();
         }
 
+        function sendDataToBackend() {
+            const url = "/update_status/"; // URL endpoint Django
+            const payload = {
+                pompa: document.getElementById("pompa").innerText.split(": ")[1] || "OFF",
+                strobo: document.getElementById("strobo").innerText.split(": ")[1] || "OFF",
+                speaker: document.getElementById("speaker").innerText.split(": ")[1] || "OFF",
+                fire: document.getElementById("fire").innerText.split(": ")[1] || "Aman",
+                batre: parseInt(document.getElementById("batre").innerText.split(": ")[1]) || 0,
+                distance: parseFloat(document.getElementById("distance").innerText.split(": ")[1]) || 0.0,
+            };
+        
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken"), // Add CSRF token if needed
+                },
+                body: JSON.stringify(payload),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data.message);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+        
+        // Call sendDataToBackend every 1 minute
+        setInterval(sendDataToBackend, 60000);
+        
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
     </script>
 </head>
 <body>
