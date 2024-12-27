@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import ESP32Data, Userakun
+from .models import SensorData, Userakun, FireImage
 
-admin.site.register(ESP32Data)
+admin.site.register(SensorData)
+admin.site.register(FireImage)
 admin.site.register(Userakun)

@@ -6,20 +6,18 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-# Data status yang di-update secara real-time
 status_data = {
-    "mqtt_status": "Not Connected",
-    "gas": "stop",
-    "direction": "neutral",
-    "steer": "netral",
-    "distance": 0.0,
+    "pompa": "OFF",
+    "strobo": "OFF",
+    "speaker": "OFF",
+    "fire" : "Aman",
+    "batre": 0,
+    "distance": 0
 }
 
-# Halaman utama
 def index(request):
     return render(request, 'index.html', {"status": status_data})
 
-# API untuk memberikan data real-time
 def get_status(request):
     return JsonResponse(status_data)
 
@@ -35,13 +33,11 @@ def update_status(request):
             return JsonResponse({"success": False, "error": str(e)})
     return JsonResponse({"success": False, "message": "Invalid request"})
 
-# Fungsi dashboard yang hanya bisa diakses jika login
 def dashboard(request):
-    # Cek status login (apakah variabel login_status bernilai 1)
     if request.session.get('login_status') == 1:
         return render(request, 'dashboard.html')
     else:
-        return redirect('login')  # Arahkan ke halaman login jika belum login
+        return redirect('login') 
 
 # Fungsi login
 def login_view(request):
@@ -55,7 +51,7 @@ def login_view(request):
             if user.password == password:
                 print(f"Authenticated User: {user.username}")
                 request.session['user_id'] = user.id
-                request.session['login_status'] = 1  # Set login_status menjadi 1
+                request.session['login_status'] = 1
                 return redirect('dashboard')
             else:
                 print("Authentication failed: Incorrect password")
@@ -68,6 +64,6 @@ def login_view(request):
 
 # Fungsi logout
 def logout_view(request):
-    logout(request)  # This will log out the user
-    request.session['login_status'] = 0  # Set login_status menjadi 0
-    return redirect('login')  # Redirect to the login page after logout
+    logout(request)
+    request.session['login_status'] = 0
+    return redirect('login') 
