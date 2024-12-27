@@ -76,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TechFire.wsgi.application'
 
-ALLOWED_HOSTS = ['192.168.1.8', 'localhost', '127.0.0.1']
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
