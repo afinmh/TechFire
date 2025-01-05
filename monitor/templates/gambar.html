@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fire Images</title>
+    <script>
+        async function fetchFireImages() {
+            try {
+                const response = await fetch('/api/fire-images/');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const container = document.getElementById('fire-image-container');
+
+                // Bersihkan kontainer sebelumnya
+                container.innerHTML = '';
+
+                // Tambahkan gambar ke halaman
+                data.fire_images.forEach(item => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                        <p>Timestamp: ${item.timestamp}</p>
+                        <img src="${item.fire_image_url}" alt="Fire Image" style="max-width: 100%; height: auto;">
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (error) {
+                console.error('Error fetching fire images:', error);
+            }
+        }
+
+        // Panggil fungsi fetch saat halaman selesai dimuat
+        window.onload = fetchFireImages;
+    </script>
+</head>
+<body>
+    <h1>Fire Images</h1>
+    <div id="fire-image-container">
+        <!-- Gambar dari API akan dimasukkan di sini -->
+    </div>
+</body>
+</html>

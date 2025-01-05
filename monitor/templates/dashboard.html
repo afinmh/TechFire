@@ -11,7 +11,7 @@
         var mqtt;
         var reconnectTimeout = 2000;
         var host = "broker.hivemq.com";
-        var port = 8884;
+        var port = 8000;
 
         function onConnectionLost() {
             console.log("Connection lost");
@@ -36,6 +36,7 @@
                 document.getElementById("fire").innerHTML = "Status Api: " + payload.fire;
                 document.getElementById("batre").innerHTML = "Batre: " + payload.batre + "%";
                 document.getElementById("distance").innerHTML = "Distance: " + payload.distance + " cm";
+                
             }
 
             // Debugging message for confirmation
@@ -104,7 +105,7 @@
         }
         
         // Call sendDataToBackend every 1 minute
-        setInterval(sendDataToBackend, 60000);
+        setInterval(sendDataToBackend, 6000);
         
         // Function to get CSRF token from cookies
         function getCookie(name) {
